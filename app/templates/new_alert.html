@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+<script type="text/javascript">
+function submitform(specform) {
+    document.forms[specform].submit();
+}
+</script>
+
+Did you mean:
+<br /><br />
+
+<ul>
+{% for key,value in stuff.items %}
+
+    <form name="myform-{{ key }}" action= "{% url 'app.views.add_alert' %}" method="POST">{% csrf_token %}
+        <input type='hidden' name='band_name' value='{{ value }}'>
+        <input type='hidden' name='skID' value='{{ key }}'>
+        <li><a href='javascript: submitform("myform-{{ key }}")'>{{ value }}</a></li>
+    </form>
+
+{% empty %}
+    <li>Sorry, no band found.</li>
+{% endfor %}
+</ul>
+
+{% endblock %}

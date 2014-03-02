@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+<script type="text/javascript">
+    function submitform(specform) {
+        document.forms[specform].submit();
+    }
+
+    $(document).ready(function() {
+        window.onload = function() {
+            $("#id_band").focus();
+        };  
+    });
+</script>
+
+
+<div class="container-fluid">
+    <div class="row-fluid">
+
+        <div class="span5" id="bands">
+
+
+{% if alerts_quantity == 0 %}
+    Howdy! Let's add your first band now.
+{% endif %}
+
+
+{% if alerts_quantity != 0 %}
+    <b>Tracked bands:</b>
+    <br /><br />
+
+    <table class="table table-striped table-hover" style='width:350px;'>
+
+        {% for x in alerts_subscribed  %}
+        <tr id={{ x.band.id }}>
+            <td>{{ x.band }}</td>
+            <td>
+
+                <form name="delform-{{ x.id }}" action="{% url 'app.views.delete_alert' %}" method="POST" style='margin:0;'>{% csrf_token %}
+                    <input type='hidden' name='alertID' value='{{ x.id }}'>
+                    <a href='javascript: submitform("delform-{{ x.id }}")'><i class="icon-remove"></i></a>
+                </form>
+                
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    
+{% endif %}
+
+<br /><br />
+
+<form action="{% url 'app.views.new_alert' %}" method="POST" class="form-inline">{% csrf_token %}
+    <div class="fieldWrapper">
+        {{ form.band }}
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </div>
+</form>
+
+<br />
+
+Your location:
+{% for x in location %}
+    {{ x.metroarea_name }}
+{% endfor %}
+ 
+<a href="#myModal" role="button" class="btn" data-toggle="modal">Update</a>
+  
+
+        </div>
+
+        <div class="span7" id='plans'>
+
+            {% if plans %}
+                <b>Your plans:</b>
+                <br /><br />
+            {% endif %}
+
+            {% for x in plans %}
+            <ul>
+                {{ x.showDate | date:"N j" }}
+                <br />
+                <i class="icon-chevron-right"></i> {{ x.band }}
+                <br />
+            </ul>
+            {% empty %}
+            {% endfor %}
+        </div>
+
+
+        <div id='test' class='hide'>
+            {% include 'band_detail.html' %}
+        </div>
+
+
+    </div>
+</div>
+
+
+
+    <!-- Modal -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="myModalLabel">Update location</h3>
+        </div>
+        <div class="modal-body">
+
+
+            <ul>
+            {% for key, value in new_locations.items %}
+
+            <form name="myform-{{ key }}" action= "{% url 'app.views.new_location' %}" method="POST">{% csrf_token %}
+                <input type='hidden' name='metroarea_name' value='{{ value }}'>
+                <input type='hidden' name='metroareaID' value='{{ key }}'>
+                <li><a href='javascript: submitform("myform-{{ key }}")'>{{ value }}</a></li>
+            </form>
+
+            {% empty %}
+                <li>Sorry, no band found.</li>
+            {% endfor %}
+            <ul>
+
+
+        </div>
+    </div>
+
+
+<script type="text/javascript">
+
+    $('tr').mouseenter(function() {
+        var trid = $(this).closest('tr').attr('id');
+        var $this = $(this);
+        var timer = setTimeout(function() {
+            $("#test").load("{% url 'app.views.get_band_detail' %}?q=" + trid);
+        }, 150);
+        $("#plans").hide();
+        $("#test").show();
+        $this.data('timer', timer);
+
+    }).mouseleave(function() {
+        $("#plans").show();
+        $("#test").hide();
+        clearTimeout($(this).data('timer'));
+    });
+
+</script>
+
+
+{% endblock %}

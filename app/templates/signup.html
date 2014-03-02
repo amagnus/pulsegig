@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        window.onload = function() {
+            $("#id_email").focus();
+        };  
+    }); 
+</script>
+
+    <div class="row">
+        <div class="span4 offset1 login">
+
+
+	    <form class="form-signin" action="{% url 'app.views.signup' %}" method="POST">
+            {% csrf_token %}
+		    
+		    {{ form.non_field_errors }}
+
+            <div class="fieldWrapper">
+                {{ form.email.errors }}
+                {{ form.email }}
+            </div>
+            <div class="fieldWrapper">
+                {{ form.password.errors }}
+                {{ form.password }}
+            </div>                
+            <div class="fieldWrapper">
+                {{ form.cell.errors }}
+                {{ form.cell }}
+            </div>
+
+            <div class="alert alert-info">
+                France: Use <b>+33</b>6xxxxxxxx
+                <br />Germany: Use <b>+49</b>xxxxxxxxx
+
+                <br /><br />Text alerts will be targeted to your current location.
+            </div>
+
+		    <center>
+                <button class="btn btn-large btn-primary" type="submit">
+                    Sign Up
+                </button>
+            </center>	    
+	    </form>
+
+
+        </div>
+    </div>
+{% endblock %}

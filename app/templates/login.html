@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% load bootstrap_toolkit %}
+
+{% block content %}
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        window.onload = function() {
+            $("#id_username").focus();
+        };  
+    }); 
+</script>
+
+    <div class="row">
+        <div class="span4 offset1 login">
+
+            {% if new_user = 1 %}
+            <div class="alert alert-success">
+                Thanks for joining! Please log in:
+            </div>
+            {% endif %}
+
+            <form class="form-signin" action="{% url 'app.views.auth' %}" method="POST">
+                {% csrf_token %}
+
+                <div class="fieldWrapper">
+                    {{ form.username.errors }}
+                    {{ form.username }}
+                </div>
+                <div class="fieldWrapper">
+                    {{ form.password.errors }}
+                    {{ form.password }}
+                </div>
+
+                <center>
+                    <button class="btn btn-large btn-primary" type="submit">
+                        Sign In
+                    </button>
+                </center>
+            </form>
+        </div>
+    </div>
+{% endblock %}

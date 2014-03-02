@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load staticfiles %}
+
+<div class='landing'>
+
+        <div style='float:left;'>
+            <img src="{% static 'images/screenshot2.png' %}" style='height:500px;' />
+        </div>
+
+        <div class="hero-unit" style='width:700px; opacity:.6; float:right;'>
+            <h2><center>Get a text when your favorite bands are playing nearby.</center></h2>
+            <p style='margin-top:25px;'>
+            <center>
+            <a href="{% url 'app.views.signup' %}" class="btn btn-primary btn-large">
+            Sign up
+            </a>
+            </center>
+            </p>
+        </div>
+
+</div>
+
+{% endblock %}

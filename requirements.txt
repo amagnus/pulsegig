@@ -1,0 +1,9 @@
+Django==1.6.2
+South==0.8.2
+django-bootstrap-toolkit==2.15.0
+httplib2==0.8
+requests==2.0.1
+six==1.5.2
+twilio==3.6.4
+unittest2==0.5.1
+MySQL-python==1.2.3c1

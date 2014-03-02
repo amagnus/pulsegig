@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+{% load bootstrap_toolkit %}
+{% load url from future %}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>PulseGig</title>
+    <meta name="description" content="">
+    {% bootstrap_stylesheet_tag %}
+    {% bootstrap_stylesheet_tag "responsive" %}
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+        }
+    </style>
+
+    {% if request.get_full_path = "/app/" %}
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+    {% endif %}
+
+    <!--[if lt IE 9]>
+    <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    
+    {% bootstrap_javascript_tag %}
+    {% block extra_head %}{% endblock %}
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="brand" href="/app/{{post}}"><b>Pulse Gig</b></a>
+            <ul class="nav">
+
+{% if request.get_full_path = "/app/myalerts/" %}
+	<li class='active'>
+{% else %}
+	<li>
+{% endif %}
+
+{% if user.is_authenticated = True %}
+    <a href="{% url 'app.views.myalerts' %}" class="">My Alerts</a></li>
+{% endif %}
+
+{% if user.is_authenticated = False %}
+    {% if request.get_full_path = "/app/signup/" %}
+        <li class='active'>
+    {% else %}
+        <li>
+{% endif %}
+
+<a href="{% url 'app.views.signup' %}" class="">Sign up</a></li>
+
+{% if request.get_full_path = "/app/login/" %}
+	<li class='active'>
+{% else %}
+	<li>
+{% endif %}
+
+<a href="{% url 'app.views.auth' %}" class="">Login</a></li>
+
+{% endif %}
+
+{% if user.is_authenticated = True %}
+	<li><a href="{% url 'app.views.logout_view' %}" class="">Logout</a></li>
+{% endif %}
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+    {% bootstrap_messages %}
+
+    {% block content %}Empty page{% endblock %}
+
+{% if request.get_full_path != "/app/" %}
+    <p><hr></p>
+{% endif %}
+
+    <footer class="row">
+        <div class="span6">
+        </div>
+        <div class="span6" style="text-align:right">
+            <p>
+                {% if request.get_full_path != "/app/" %}
+                    <img src="{% static 'images/sk_logo.png' %}" style='margin-right:10px;' />
+                {% endif %}
+              
+                <span style='margin-right:10px;'><b><a href='mailto:adrien.magnus@gmail.com'>Contact us</a></b></span>
+
+                &copy; Pulse_Gig 2013
+            </p>
+        </div>
+    </footer>
+
+</div> <!-- container -->
+
+</body>
+</html>
