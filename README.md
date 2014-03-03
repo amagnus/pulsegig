@@ -46,13 +46,28 @@ pip install -r requirements.txt
 
 ## Scheduled tasks
 
-- A few management commands are running as cron jobs to pull data off Songkick and send texts accordingly
- 
-0 */3 * * *  /var/www/pulsegig.com/manage.py cron --settings=blogsc.settings.production >> /root/pullshows.log
+A few management commands are running as cron jobs to pull data off Songkick and send texts accordingly.
 
-*/20 * * * *  /var/www/pulsegig.com/manage.py cron_autosender --settings=blogsc.settings.production >> /root/pullshows.log
+- Pull Songkick for new shows and add alerts to queue:
 
-0 2 * * *  /var/www/pulsegig.com/manage.py cron_similar --settings=blogsc.settings.production >> /root/pullshows.log
+```
+0 */3 * * *  /var/www/pulsegig.com/manage.py cron --settings=blogsc.settings.production >> /var/log/pullshows.log
+```
 
-0 7 * * *  /var/www/pulsegig.com/manage.py cron_sim_check --settings=blogsc.settings.production >> /root/pullshows.log
+- Process texts queue:
 
+```
+*/20 * * * *  /var/www/pulsegig.com/manage.py cron_autosender --settings=blogsc.settings.production >> /var/log/pullshows.log
+```
+
+- Update bands similarity bindings in database:
+
+```
+0 2 * * *  /var/www/pulsegig.com/manage.py cron_similar --settings=blogsc.settings.production >> /var/log/pullshows.log
+```
+
+- Pull Songkick for any new show for bands similar to subscribed bands, and add alerts to queue:
+
+```
+0 7 * * *  /var/www/pulsegig.com/manage.py cron_sim_check --settings=blogsc.settings.production >> /var/log/pullshows.log
+```
