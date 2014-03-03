@@ -17,7 +17,9 @@ Installation
 
 - Clone this repo:
 
+```
 git clone https://github.com/amagnus/pulsegig.git
+```
 
 - Install requirements:
 
@@ -31,7 +33,7 @@ https://developers.google.com/url-shortener/
 
 - Enter proper settings in /pulsegig/settings. Environment variables are being used. Feel free to use regular settings or whatever you feel comfortable with.
 
-- Prepare 
+- Synchronize the database state with current models
 
 ./manage.py migrate app
 
